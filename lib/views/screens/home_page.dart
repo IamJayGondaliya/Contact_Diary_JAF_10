@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider_contact_diary_app/utils/route_utils.dart';
 import 'package:provider_contact_diary_app/views/components/my_back_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,11 +13,11 @@ class HomePage extends StatelessWidget {
         title: const Text("HomePage"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          "Hello Flutter !!",
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(MyRoutes.addContactPage);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
