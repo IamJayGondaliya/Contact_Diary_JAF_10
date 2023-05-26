@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
 import 'package:provider_contact_diary_app/utils/route_utils.dart';
 import 'package:provider_contact_diary_app/views/components/my_back_button.dart';
 
@@ -9,9 +11,16 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const MyBackButton(),
         title: const Text("HomePage"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+            },
+            icon: Icon(Icons.dark_mode),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

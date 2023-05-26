@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/counter_controller.dart';
 import 'package:provider_contact_diary_app/controllers/stepper_controller.dart';
+import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
 import 'package:provider_contact_diary_app/views/components/my_back_button.dart';
 
 class AddContactPage extends StatelessWidget {
@@ -17,6 +18,14 @@ class AddContactPage extends StatelessWidget {
         leading: const MyBackButton(),
         title: const Text("Add Contact"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+            },
+            icon: const Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
