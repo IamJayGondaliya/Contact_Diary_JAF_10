@@ -6,12 +6,9 @@ class IntroProvider extends ChangeNotifier {
   String sfFirst = "is_first_time";
   bool firstTime = false;
 
-  init() async {
-    prefs = await SharedPreferences.getInstance();
-  }
+  IntroProvider({required this.prefs});
 
   bool checkFirstTime() {
-    init();
     if (prefs != null) {
       firstTime = prefs!.getBool(sfFirst) ?? true;
       if (firstTime) {

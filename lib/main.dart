@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/counter_controller.dart';
 import 'package:provider_contact_diary_app/controllers/intro_provider.dart';
+import 'package:provider_contact_diary_app/controllers/list_controller.dart';
 import 'package:provider_contact_diary_app/controllers/stepper_controller.dart';
 import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
 import 'package:provider_contact_diary_app/utils/route_utils.dart';
@@ -9,9 +10,12 @@ import 'package:provider_contact_diary_app/views/screens/add_contact_page.dart';
 import 'package:provider_contact_diary_app/views/screens/counter_page.dart';
 import 'package:provider_contact_diary_app/views/screens/home_page.dart';
 import 'package:provider_contact_diary_app/views/screens/intro_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   runApp(
     MultiProvider(
@@ -22,10 +26,13 @@ void main() {
         ),
         //When we've to pass value in another widget and make changes in that.
         ListenableProvider(
-          create: (context) => IntroProvider(),
+          create: (context) => IntroProvider(prefs: prefs),
         ),
         ListenableProvider(
-          create: (context) => ThemeProvider(),
+          create: (context) => ListController(prefs: prefs),
+        ),
+        ListenableProvider(
+          create: (context) => ThemeProvider(prefs: prefs),
         ),
         ListenableProvider(
           create: (context) => MyStepperController(),
@@ -43,7 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: Provider.of<ThemeProvider>(context).isDark ? ThemeMode.dark : ThemeMode.light,
+      themeMode: Provider.of<ThemeProvider>(context).getTheme ? ThemeMode.dark : ThemeMode.light,
       //Light Mode
       theme: ThemeData(
         useMaterial3: true,
