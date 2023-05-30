@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/list_controller.dart';
 import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
@@ -15,30 +16,45 @@ class HomePage extends StatelessWidget {
         title: const Text("HomePage"),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
+          GestureDetector(
+            onLongPress: () async {
+              print("Long Pressed.....");
+              LocalAuthentication auth = LocalAuthentication();
+
+              bool done = await auth.authenticate(
+                localizedReason: "Open to access hidden contacts !!",
+              );
+
+              if (done) {
+                Navigator.of(context).pushNamed(MyRoutes.hiddenContactPage);
+              }
+            },
+            onTap: () {
               Provider.of<ThemeProvider>(context, listen: false).changeTheme();
             },
-            icon: Icon(Icons.dark_mode),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Icon(Icons.dark_mode),
+            ),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView.builder(
-          itemCount: Provider.of<ListController>(context).getAllContacts.length,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(Provider.of<ListController>(context, listen: false).getAllContacts[index].title),
-            subtitle: Text(Provider.of<ListController>(context, listen: false).getAllContacts[index].subTitle),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                Provider.of<ListController>(context, listen: false).removeItem(index: index);
-              },
-            ),
-          ),
-        ),
-      ),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(20),
+      //   child: ListView.builder(
+      //     itemCount: Provider.of<ListController>(context).getAllContacts.length,
+      //     itemBuilder: (context, index) => ListTile(
+      //       title: Text(Provider.of<ListController>(context, listen: false).getAllContacts[index].title),
+      //       subtitle: Text(Provider.of<ListController>(context, listen: false).getAllContacts[index].subTitle),
+      //       trailing: IconButton(
+      //         icon: const Icon(Icons.delete),
+      //         onPressed: () {
+      //           Provider.of<ListController>(context, listen: false).removeItem(index: index);
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(MyRoutes.addContactPage);

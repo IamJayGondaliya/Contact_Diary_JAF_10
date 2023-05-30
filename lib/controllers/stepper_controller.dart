@@ -9,6 +9,13 @@ class MyStepperController extends ChangeNotifier {
   String? email;
   String? web;
 
+  bool isHidden = false;
+
+  void hide() {
+    isHidden = !isHidden;
+    notifyListeners();
+  }
+
   File? image;
 
   void stepIncrease() {

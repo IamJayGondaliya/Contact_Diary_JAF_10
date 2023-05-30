@@ -1,9 +1,9 @@
 class Contact {
-  String title;
-  String subTitle;
+  String name;
+  String number;
 
   Contact({
-    required this.title,
-    required this.subTitle,
+    required this.name,
+    required this.number,
   });
 }

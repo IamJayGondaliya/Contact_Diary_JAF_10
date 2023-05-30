@@ -8,6 +8,7 @@ import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
 import 'package:provider_contact_diary_app/utils/route_utils.dart';
 import 'package:provider_contact_diary_app/views/screens/add_contact_page.dart';
 import 'package:provider_contact_diary_app/views/screens/counter_page.dart';
+import 'package:provider_contact_diary_app/views/screens/hidden_contact_page.dart';
 import 'package:provider_contact_diary_app/views/screens/home_page.dart';
 import 'package:provider_contact_diary_app/views/screens/intro_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         MyRoutes.home: (context) => const HomePage(),
         MyRoutes.addContactPage: (context) => AddContactPage(),
         MyRoutes.introScreen: (context) => IntroPage(),
+        MyRoutes.hiddenContactPage: (context) => const HiddenContactsPage(),
       },
     );
   }
