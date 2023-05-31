@@ -21,6 +21,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        //ChangeNotifierProvider
         //When we've to use value directly which doesn't affects another widget.
         Provider(
           create: (context) => CounterController(),
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       // initialRoute: Provider.of<IntroProvider>(context).checkFirstTime() ? MyRoutes.introScreen : MyRoutes.home,
-      initialRoute: MyRoutes.introScreen,
+      initialRoute: Provider.of<IntroProvider>(context).isFirstTime ? MyRoutes.introScreen : MyRoutes.home,
       routes: {
         MyRoutes.home: (context) => const HomePage(),
         MyRoutes.addContactPage: (context) => AddContactPage(),

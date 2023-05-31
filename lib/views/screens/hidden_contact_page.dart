@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/list_controller.dart';
@@ -14,11 +16,18 @@ class HiddenContactsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: ListView.builder(
-          itemCount: Provider.of<ListController>(context).getAllHiddenContacts.length,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(Provider.of<ListController>(context).allHiddenContacts[index].name),
-            subtitle: Text(Provider.of<ListController>(context).allHiddenContacts[index].number),
+        child: Consumer<ListController>(
+          builder: (context, provider, child) => ListView.builder(
+            itemCount: provider.getAllHiddenContacts.length,
+            itemBuilder: (context, index) => ListTile(
+              leading: CircleAvatar(
+                foregroundImage: FileImage(
+                  File(provider.allHiddenContacts[index].imagePath),
+                ),
+              ),
+              title: Text(provider.allHiddenContacts[index].name),
+              subtitle: Text(provider.allHiddenContacts[index].number),
+            ),
           ),
         ),
       ),

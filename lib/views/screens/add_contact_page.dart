@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/counter_controller.dart';
 import 'package:provider_contact_diary_app/controllers/list_controller.dart';
@@ -29,10 +30,17 @@ class AddContactPage extends StatelessWidget {
             },
             icon: const Icon(Icons.dark_mode),
           ),
+          //Add image in shared preferences using path_provider
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              Directory? dir = await getExternalStorageDirectory();
+
+              File nImage =
+                  await Provider.of<MyStepperController>(context, listen: false).image!.copy("${dir!.path}/${_name}.jpg");
+
               if (Provider.of<MyStepperController>(context, listen: false).isHidden) {
-                Provider.of<ListController>(context, listen: false).addHiddenContact(name: _name!, number: _number!);
+                Provider.of<ListController>(context, listen: false)
+                    .addHiddenContact(name: _name!, number: _number!, imagePath: nImage.path);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: const Text("Contact added"),
@@ -61,6 +69,28 @@ class AddContactPage extends StatelessWidget {
             },
             onStepTapped: (index) {
               provider.stepTapped(index: index);
+            },
+            controlsBuilder: (context, details) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        provider.stepIncrease();
+                      },
+                      child: const Text("Next"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        provider.stepDecrease();
+                      },
+                      child: const Text("Previous"),
+                    ),
+                  ],
+                ),
+              );
             },
             steps: <Step>[
               Step(

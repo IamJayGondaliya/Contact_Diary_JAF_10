@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:provider_contact_diary_app/controllers/list_controller.dart';
 import 'package:provider_contact_diary_app/controllers/theme_controller.dart';
 import 'package:provider_contact_diary_app/utils/route_utils.dart';
-import 'package:provider_contact_diary_app/views/components/my_back_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,11 +30,40 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Provider.of<ThemeProvider>(context, listen: false).changeTheme();
             },
-            child: Padding(
-              padding: const EdgeInsets.all(10),
+            child: const Padding(
+              padding: EdgeInsets.all(15),
               child: Icon(Icons.dark_mode),
             ),
-          )
+          ),
+          PopupMenuButton(
+            offset: const Offset(0, 50),
+            onSelected: (val) async {
+              if (val == MyRoutes.hiddenContactPage) {
+                LocalAuthentication auth = LocalAuthentication();
+
+                bool done = await auth.authenticate(
+                  localizedReason: "Open to access hidden contacts !!",
+                );
+
+                if (done) {
+                  Navigator.of(context).pushNamed(MyRoutes.hiddenContactPage);
+                }
+              } else {
+                Navigator.of(context).pushNamed(val);
+              }
+            },
+            icon: Icon(Icons.list),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: MyRoutes.addContactPage,
+                child: const Text("Add Contact Page"),
+              ),
+              PopupMenuItem(
+                value: MyRoutes.hiddenContactPage,
+                child: const Text("Hidden Contact Page"),
+              ),
+            ],
+          ),
         ],
       ),
       // body: Padding(

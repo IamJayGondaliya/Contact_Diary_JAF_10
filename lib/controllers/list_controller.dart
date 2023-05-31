@@ -10,12 +10,14 @@ class ListController extends ChangeNotifier {
 
   final String _sfHiddenName = "all_hidden_names";
   final String _sfHiddenNumber = "all_hidden_numbers";
+  final String _sfHiddenImage = "all_hidden_images";
 
   List<String> _allTitles = [];
   List<String> _allSubTitles = [];
 
   List<String> _allHiddenNames = [];
   List<String> _allHiddenNumbers = [];
+  List<String> _allHiddenImages = [];
 
   List<Contact> allContacts = [];
 
@@ -55,24 +57,32 @@ class ListController extends ChangeNotifier {
   List<Contact> get getAllHiddenContacts {
     _allHiddenNames = prefs.getStringList(_sfHiddenName) ?? [];
     _allHiddenNumbers = prefs.getStringList(_sfHiddenNumber) ?? [];
+    _allHiddenImages = prefs.getStringList(_sfHiddenImage) ?? [];
 
     allHiddenContacts = List.generate(
       _allHiddenNumbers.length,
-      (index) => Contact(name: _allHiddenNames[index], number: _allHiddenNumbers[index]),
+      (index) => Contact(
+        name: _allHiddenNames[index],
+        number: _allHiddenNumbers[index],
+        imagePath: _allHiddenImages[index],
+      ),
     );
 
     return allHiddenContacts;
   }
 
-  void addHiddenContact({required String name, required String number}) {
+  void addHiddenContact({required String name, required String number, required String imagePath}) {
     _allHiddenNames = prefs.getStringList(_sfHiddenName) ?? [];
     _allHiddenNumbers = prefs.getStringList(_sfHiddenNumber) ?? [];
+    _allHiddenImages = prefs.getStringList(_sfHiddenImage) ?? [];
 
     _allHiddenNames.add(name);
     _allHiddenNumbers.add(number);
+    _allHiddenImages.add(imagePath);
 
     prefs.setStringList(_sfHiddenName, _allHiddenNames);
     prefs.setStringList(_sfHiddenNumber, _allHiddenNumbers);
+    prefs.setStringList(_sfHiddenImage, _allHiddenImages);
   }
 
   void addItem({required String title, required String subtitle}) {

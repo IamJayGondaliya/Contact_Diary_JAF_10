@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_contact_diary_app/controllers/intro_provider.dart';
@@ -9,11 +11,11 @@ class IntroPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!Provider.of<IntroProvider>(context).checkFirstTime()) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacementNamed(MyRoutes.home);
-      });
-    }
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      Provider.of<IntroProvider>(context, listen: false).firstDone();
+      Navigator.of(context).pushReplacementNamed(MyRoutes.home);
+      timer.cancel();
+    });
 
     return Scaffold(
       body: Center(
